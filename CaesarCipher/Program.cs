@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 
 namespace CaesarCipher
 {
@@ -6,43 +8,17 @@ namespace CaesarCipher
     {
         static void Main(string[] args)
         {
-            Console.Write("Enter a message to Encrypt: ");
-            var message = Console.ReadLine();
+            string message = AlphabetEncryption.userMessage();
 
-            Console.Write("Enter a shift value (1 - 26): ");
-            int shift = Convert.ToInt32(Console.ReadLine());
+            int shift = AlphabetEncryption.userShift();
 
-            var result = Encrypt(message, shift);
-            Console.WriteLine(result);
-        }
+            List<char[]> bothAlphabets = AlphabetEncryption.AlphabetCreationAndEncrypt(message,shift);
 
-        static string Encrypt(string message, int shift)
-        {
-            char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-            
-            char[] cipherAlphabet = new char[26];
-            Array.Copy(alphabet, shift, cipherAlphabet, 0, 26 - shift);
-            Array.Copy(alphabet, 0, cipherAlphabet, 26 - shift, shift);
+            string encryptedMessage = AlphabetEncryption.SplitAndEncrypt(message, bothAlphabets);
 
-            char[] splitMessage = message.ToCharArray();
+            AlphabetEncryption.displayResults(encryptedMessage);
 
-            string encrypted = "";
-
-            foreach (var letter in splitMessage)
-            {
-                if (alphabet.Contains(letter))
-                {
-                    int indexOfLetter = Array.IndexOf(alphabet, letter);
-                    char encryptedLetter = cipherAlphabet[indexOfLetter];
-                    encrypted += encryptedLetter;
-                }
-                else
-                {
-                    encrypted += letter;
-                }
-            }
-
-            return encrypted;
+            //char[] alphabet = AlphabetEncryption.alphabet;
         }
     }
 }
